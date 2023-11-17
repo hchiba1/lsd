@@ -1,0 +1,14 @@
+#!/usr/bin/env spang2
+# @endpoint lsd
+# @option -a
+# @param english='human'
+
+SELECT DISTINCT ?term_e ?term_j ?label_ja
+WHERE {
+  ?term_e rdfs:label "${english}"@en ;
+          lsdo:hasEntry ?b_node .
+  ?b_node lsdo:hasJapaneseTranslationOf ?term_j .
+  ?term_j rdfs:label ?label_ja .
+  FILTER (lang(?label_ja) = "ja")
+}
+ORDER BY ?term_j
