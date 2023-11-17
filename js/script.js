@@ -14,7 +14,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function submitText(text) {
-    fetchDatabySPARQL(text).then(data => {
+    const lines = text.split(/\r\n|\r|\n/)
+        .map(line => line.trim().replace(/^\s+/, ""))
+        .filter(line => line !== "") // remove empty lines
+        .map(line => `("${line}"@en)`).join(" ");
+    fetchDatabySPARQL(lines).then(data => {
       renderTable(data);
     });
   }

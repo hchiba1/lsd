@@ -1,17 +1,21 @@
-async function fetchDatabySPARQL(name) {
+async function fetchDatabySPARQL(input) {
   const endpointUrl = 'https://lsd.dbcls.jp/sparql';
   const sparqlQuery = `
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX lsdo: <http://purl.jp/bio/10/lsd/ontology/201209#>
 
-SELECT DISTINCT ?term_e ?term_j ?label_ja
+SELECT DISTINCT ?term_e ?term_j ?str ?str_ja
 WHERE {
-  ?term_e rdfs:label "${name}"@en ;
+  VALUES (?label) { ${input} }
+  ?term_e rdfs:label ?label ;
           lsdo:hasEntry ?b_node .
   ?b_node lsdo:hasJapaneseTranslationOf ?term_j .
   ?term_j rdfs:label ?label_ja .
   FILTER (lang(?label_ja) = "ja")
+  BIND(str(?label_ja) AS ?str_ja)
+  BIND(str(?label) AS ?str)
 }
+ORDER BY ?str ?term_j
 `;
 
   try {
