@@ -15,7 +15,7 @@ WHERE {
   BIND(str(?label_ja) AS ?str_ja)
   BIND(str(?label) AS ?str)
 }
-ORDER BY ?str ?term_j
+ORDER BY ?term_e ?term_j
 `;
 
   try {
