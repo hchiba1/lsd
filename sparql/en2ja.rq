@@ -3,12 +3,13 @@
 # @option -a
 # @param label='human'
 
-SELECT DISTINCT ?term_e ?term_j ?label_ja
+SELECT DISTINCT ?term_e ?term_j ?label_ja ?significance
 WHERE {
   ?term_e rdfs:label "${label}"@en ;
           lsdo:hasEntry ?b_node .
   ?b_node lsdo:hasJapaneseTranslationOf ?term_j .
-  ?term_j rdfs:label ?label_ja .
+  ?term_j rdfs:label ?label_ja ;
+          lsdo:significanceValueJpn ?significance .
   FILTER (lang(?label_ja) = "ja")
 }
 ORDER BY ?term_j
